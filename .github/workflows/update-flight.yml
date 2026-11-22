@@ -1,0 +1,39 @@
+name: Update Tokyo Flight Prices (Daily Midnight KST)
+
+on:
+  schedule:
+    # 15:00 UTC = 00:00 KST (매일 자정 한국시간)
+    - cron: '0 15 * * *'
+  workflow_dispatch: # 대시보드 UI 또는 GitHub Actions 탭에서 수동 즉시 실행 가능
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch Google Flights via SerpApi
+        env:
+          SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
+        run: python fetch_flights.py
+
+      - name: Commit updated data/flights.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/flights.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: update flight prices ($(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST'))"
+            git push
+          fi
