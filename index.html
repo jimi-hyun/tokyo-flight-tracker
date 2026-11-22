@@ -378,7 +378,8 @@
     }
 
     // Clock & 00:05 KST auto-reload timer
-    let lastAutoReloadDate = "";
+    // Clock & smart auto-reload timer (00:03 ~ 00:45 KST 사이 오늘 데이터 반영될 때까지 2분 간격 확인, 0크레딧)
+    let lastCheckedMinute = "";
     function tickClock() {
       const now = new Date();
       const kstStr = now.toLocaleString("sv-SE", { timeZone: "Asia/Seoul" }); // YYYY-MM-DD HH:MM:SS
@@ -396,11 +397,18 @@
       const cs = String(diff % 60).padStart(2, "0");
       document.getElementById("midnightCountdown").textContent = `${ch}:${cm}:${cs}`;
 
-      if (hh === 0 && mm === 5 && ss === 0 && lastAutoReloadDate !== datePart) {
-        lastAutoReloadDate = datePart;
+      const isAlreadyToday = String(appData.updated_at_kst || "").startsWith(datePart);
+      const minKey = `${datePart} ${hh}:${mm}`;
+      if (!isAlreadyToday && hh === 0 && mm >= 3 && mm <= 45 && mm % 2 === 1 && lastCheckedMinute !== minKey) {
+        lastCheckedMinute = minKey;
         loadFlightJson(true);
       }
     }
+
+    // 절전 모드 해제나 다른 탭에서 돌아왔을 때도 최신 JSON 자동 동기화 (0크레딧)
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) loadFlightJson(true);
+    });
 
     async function loadFlightJson(silent = false) {
       if (location.protocol === "file:") {
