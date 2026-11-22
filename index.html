@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>도쿄 아리아케 아레나 항공권 트래커 (2027.03.27~29)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif; }
+    .tab-active { background-color: #0f172a; color: #ffffff; }
+    .chip-active { background-color: #2563eb; color: #ffffff; border-color: #2563eb; }
+    .chip-inactive { background-color: #ffffff; color: #475569; border-color: #cbd5e1; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+  <!-- Header -->
+  <header class="bg-slate-900 text-white shadow-md sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-indigo-500/30 text-indigo-200 border border-indigo-400/40">LIVE TRACKER</span>
+          <h1 class="text-lg md:text-xl font-bold tracking-tight">도쿄 아리아케 아레나 항공권 비교</h1>
+        </div>
+        <p class="text-xs text-slate-300 mt-0.5">
+          2027.03.27(토) 오전 10시 이전 출발(+1h 유동) · 2027.03.29(월) 도쿄 17시 이후 출발(-1h 유동)
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2.5 text-xs">
+        <div class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-right">
+          <div class="text-slate-400 text-[11px]">현재 시각 (KST)</div>
+          <div id="kstClock" class="font-mono font-semibold text-sm text-emerald-300">--:--:--</div>
+        </div>
+        <div class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-right">
+          <div class="text-slate-400 text-[11px]">다음 자정 자동 갱신 (00:05 KST)</div>
+          <div id="midnightCountdown" class="font-mono font-semibold text-sm text-sky-300">--:--:--</div>
+        </div>
+        <button id="btnReloadJson" title="JSON 다시 불러오기 (크레딧 0 소모)" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg font-medium transition">
+          JSON 재로드 (0크레딧)
+        </button>
+        <button id="btnOpenSettings" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-2 rounded-lg font-medium transition">
+          API / GitHub 설정
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-5 space-y-5">
+    <!-- Local file:// notice banner -->
+    <div id="fileProtocolBanner" class="hidden bg-amber-50 border border-amber-300 text-amber-900 rounded-xl p-3.5 text-xs flex flex-wrap items-center justify-between gap-2">
+      <div>
+        <strong>로컬 파일(file://)로 직접 열렸습니다.</strong> 브라우저 보안 정책상 <code>./data/flights.json</code> 자동 읽기가 제한되어 내장 시드 데이터를 표시 중입니다.
+        실시간 로컬 데이터를 보려면 폴더 안의 <strong><code>start_local.bat</code></strong>(Windows) 또는 <strong><code>start_local.sh</code></strong>(Mac/Linux)로 실행하거나 GitHub Pages에 올려 주세요.
+      </div>
+    </div>
+
+    <!-- Top Status & SerpApi Free Refresh Quota Card -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <!-- Quota Card -->
+      <div class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600">SerpApi 무료 크레딧 현황</span>
+              <span id="dataSourceBadge" class="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">초기 시드</span>
+            </div>
+            <div class="mt-1 flex items-baseline gap-2.5">
+              <span class="text-sm text-slate-500">남은 무료 새로고침</span>
+              <span id="remainingRefreshes" class="text-3xl font-extrabold text-slate-900">--회</span>
+              <span id="remainingCreditsText" class="text-xs text-slate-500">(잔여 -- / 250 크레딧 · 1회당 6크레딧)</span>
+            </div>
+          </div>
+
+          <button id="btnManualFetch" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3.5 py-2.5 rounded-xl shadow-sm transition flex items-center gap-1.5">
+            <span>지금 실시간 수집 실행 (-6크레딧)</span>
+          </button>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="mt-3">
+          <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+            <div id="quotaBar" class="h-full bg-emerald-500 transition-all duration-500" style="width: 100%"></div>
+          </div>
+          <div class="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600">
+            <div class="flex flex-wrap gap-3">
+              <span>이번 달 남은 자정 자동수집: <strong id="remainingMidnightRuns">--회</strong></span>
+              <span>여유 수동 수집 가능: <strong id="extraManualSafe" class="text-indigo-600">--회</strong></span>
+              <span id="renewalDateSpan" class="text-slate-400">갱신일: 매월 자동 갱신</span>
+            </div>
+            <div class="text-slate-400">최종 수집: <span id="lastUpdatedKst" class="text-slate-600 font-medium">-</span></div>
+          </div>
+        </div>
+        <div id="pollingStatus" class="hidden mt-2.5 text-xs bg-indigo-50 border border-indigo-200 text-indigo-800 rounded-lg px-3 py-2"></div>
+      </div>
+
+      <!-- Best Deal Summary Card -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">현재 필터 기준 최저가 요약</div>
+          <div class="mt-2.5 space-y-2 text-sm">
+            <div class="flex justify-between items-center">
+              <span class="text-slate-600">왕복 최저가 (ICN↔NRT)</span>
+              <strong id="kpiIcnMin" class="font-mono text-slate-900">-</strong>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-slate-600">왕복 최저가 (GMP↔HND)</span>
+              <strong id="kpiGmpMin" class="font-mono text-slate-900">-</strong>
+            </div>
+            <div class="flex justify-between items-center pt-1.5 border-t border-slate-100">
+              <span class="text-slate-600">편도 조합 최저가</span>
+              <strong id="kpiComboMin" class="font-mono text-indigo-700">-</strong>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+          <span id="kpiBaggageNote">운임 기준: 기본(LCC 수하물 미포함)</span>
+          <button id="btnExportJson" class="text-indigo-600 hover:underline font-medium">스냅샷 JSON 저장</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter Controls -->
+    <section class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3.5">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <!-- Outbound time filter -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1.5">3/27(토) 한국 출발 시각</label>
+          <select id="filterOutTime" class="w-full text-xs border border-slate-300 rounded-lg px-2.5 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="10:00">10:00 이전 (기준)</option>
+            <option value="10:30">10:30 이전 (+30분 유동)</option>
+            <option value="11:00" selected>11:00 이전 (+1시간 유동)</option>
+          </select>
+        </div>
+
+        <!-- Inbound Tokyo departure time filter -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1.5">3/29(월) 도쿄 출발 시각</label>
+          <select id="filterInTime" class="w-full text-xs border border-slate-300 rounded-lg px-2.5 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="17:00">17:00 이후 (기준)</option>
+            <option value="16:30">16:30 이후 (-30분 유동)</option>
+            <option value="16:00" selected>16:00 이후 (-1시간 유동)</option>
+          </select>
+        </div>
+
+        <!-- Airport filters -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1.5">공항 필터 (한국 / 도쿄)</label>
+          <div class="flex flex-wrap gap-1.5">
+            <button data-kr="ICN" class="airport-kr chip-active text-xs px-2.5 py-1 rounded-md border font-medium">ICN</button>
+            <button data-kr="GMP" class="airport-kr chip-active text-xs px-2.5 py-1 rounded-md border font-medium">GMP</button>
+            <button data-kr="CJJ" class="airport-kr chip-active text-xs px-2.5 py-1 rounded-md border font-medium">CJJ</button>
+            <span class="text-slate-300 self-center">|</span>
+            <button data-jp="NRT" class="airport-jp chip-active text-xs px-2.5 py-1 rounded-md border font-medium">NRT</button>
+            <button data-jp="HND" class="airport-jp chip-active text-xs px-2.5 py-1 rounded-md border font-medium">HND</button>
+          </div>
+        </div>
+
+        <!-- LCC Baggage toggle -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1.5">LCC 위탁수하물(15kg) 반영</label>
+          <label class="flex items-center gap-2 text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 cursor-pointer select-none">
+            <input id="toggleBaggage" type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-500" />
+            <span>LCC 예상 수하물비 합산 <span class="text-slate-400">(왕복 +9만 / 편도 +4.5만)</span></span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <div class="flex flex-wrap gap-2">
+      <button data-tab="roundtrip" class="tab-btn tab-active text-xs md:text-sm font-semibold px-4 py-2 rounded-xl border border-slate-200 transition">왕복 항공편 비교</button>
+      <button data-tab="oneway" class="tab-btn bg-white text-slate-700 hover:bg-slate-100 text-xs md:text-sm font-semibold px-4 py-2 rounded-xl border border-slate-200 transition">편도 조합 시뮬레이터</button>
+      <button data-tab="chart" class="tab-btn bg-white text-slate-700 hover:bg-slate-100 text-xs md:text-sm font-semibold px-4 py-2 rounded-xl border border-slate-200 transition">자정 가격 변동 추이</button>
+      <button data-tab="launcher" class="tab-btn bg-white text-slate-700 hover:bg-slate-100 text-xs md:text-sm font-semibold px-4 py-2 rounded-xl border border-slate-200 transition">Google Flights 퀵 런처</button>
+    </div>
+
+    <!-- Tab 1: Round Trip -->
+    <section id="tab-roundtrip" class="tab-panel bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+      <div class="p-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 class="text-sm font-bold text-slate-900">직항 왕복 항공편 비교 (3/27 토 ~ 3/29 월)</h2>
+          <p class="text-xs text-slate-500">귀국 시각은 도쿄(NRT/HND) 출발 기준입니다. 가격 옆 연필 버튼으로 실결제가 수동 보정이 가능합니다.</p>
+        </div>
+        <select id="sortRoundTrip" class="text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white">
+          <option value="price">낮은 가격순</option>
+          <option value="out_depart">3/27 출발 빠른순</option>
+          <option value="in_depart">3/29 도쿄 출발 늦은순</option>
+          <option value="duration">비행시간 짧은순</option>
+        </select>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs md:text-sm">
+          <thead class="bg-slate-50 text-slate-500 text-xs uppercase">
+            <tr>
+              <th class="py-3 px-4">항공사 / 편명</th>
+              <th class="py-3 px-4">구간</th>
+              <th class="py-3 px-4">3/27(토) 가는 편</th>
+              <th class="py-3 px-4">3/29(월) 도쿄 출발 귀국편</th>
+              <th class="py-3 px-4 text-right">예상 왕복가</th>
+              <th class="py-3 px-4 text-center">링크</th>
+            </tr>
+          </thead>
+          <tbody id="roundTripBody" class="divide-y divide-slate-100"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Tab 2: One-Way Simulator -->
+    <section id="tab-oneway" class="tab-panel hidden space-y-4">
+      <!-- Sticky Combination Result Bar -->
+      <div class="bg-slate-900 text-white rounded-2xl p-4 shadow-sm flex flex-wrap items-center justify-between gap-4">
+        <div class="space-y-1">
+          <div class="text-xs text-slate-400">선택된 편도 조합 (가는 편 + 오는 편)</div>
+          <div id="comboSummaryText" class="text-sm font-semibold">아래에서 가는 편과 오는 편을 각각 선택해 주세요.</div>
+          <div id="comboWarnings" class="flex flex-wrap gap-1.5"></div>
+        </div>
+        <div class="text-right">
+          <div id="comboTotalPrice" class="text-2xl font-extrabold font-mono text-emerald-300">-</div>
+          <div id="comboDiffText" class="text-xs text-slate-300 mt-0.5">왕복 최저가 대비 차액 계산</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+          <h3 class="text-sm font-bold text-slate-900 mb-1">① 3/27(토) 가는 편 (한국 → 도쿄)</h3>
+          <p class="text-xs text-slate-500 mb-3">오전 출발 직항 · 클릭하여 선택</p>
+          <div id="owOutboundList" class="space-y-2"></div>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+          <h3 class="text-sm font-bold text-slate-900 mb-1">② 3/29(월) 오는 편 (도쿄 → 한국)</h3>
+          <p class="text-xs text-slate-500 mb-3">도쿄 출발 17:00 이후(-1h 유동) 직항 · 클릭하여 선택</p>
+          <div id="owInboundList" class="space-y-2"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Price History Chart -->
+    <section id="tab-chart" class="tab-panel hidden bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div>
+          <h2 class="text-sm font-bold text-slate-900">매일 자정(00:00 KST) 가격 변동 추이</h2>
+          <p class="text-xs text-slate-500">GitHub Actions가 매일 자정 수집해 <code>data/flights.json</code>에 누적한 일별 최저가 그래프입니다.</p>
+        </div>
+      </div>
+      <div class="h-72">
+        <canvas id="priceChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Tab 4: Google Flights Quick Launcher -->
+    <section id="tab-launcher" class="tab-panel hidden bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+      <h2 class="text-sm font-bold text-slate-900 mb-1">Google Flights 실시간 원클릭 런처 (7개 핵심 구간)</h2>
+      <p class="text-xs text-slate-500 mb-4">SerpApi 크레딧을 쓰지 않고 Google Flights 실제 예약 화면을 바로 확인할 수 있습니다.</p>
+      <div id="quickLauncherGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+    </section>
+  </main>
+
+  <!-- Manual Fetch Confirmation Modal -->
+  <div id="modalConfirmFetch" class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-5 shadow-xl space-y-3">
+      <h3 class="text-base font-bold text-slate-900">실시간 수동 수집 실행 확인</h3>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        GitHub Actions(<code>workflow_dispatch</code>)를 즉시 실행하여 SerpApi에서 6개 구간을 새로 수집합니다.<br/>
+        • 소모 크레딧: <strong class="text-rose-600">6 크레딧</strong> (현재 남은 무료 새로고침 <strong id="modalRemainCount">--회</strong>)<br/>
+        • 완료까지 약 30~60초 소요되며 완료 시 자동으로 화면이 갱신됩니다.
+      </p>
+      <div class="flex justify-end gap-2 pt-2">
+        <button id="btnCancelFetch" class="px-3.5 py-2 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700">취소</button>
+        <button id="btnConfirmFetch" class="px-3.5 py-2 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white">수집 실행 (-6크레딧)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="modalSettings" class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-5 shadow-xl space-y-3.5">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-bold text-slate-900">API / GitHub Actions 연동 설정</h3>
+        <button id="btnCloseSettings" class="text-slate-400 hover:text-slate-600 text-lg">&times;</button>
+      </div>
+      <p class="text-xs text-slate-500">
+        GitHub Pages에 올리면 <code>./data/flights.json</code>은 별도 설정 없이 자동 연동됩니다. 아래 설정은 브라우저에서 <strong>수동 수집 버튼</strong>을 눌렀을 때 GitHub Actions를 원격 실행하기 위한 옵션입니다. (브라우저 <code>localStorage</code>에만 저장됩니다.)
+      </p>
+      <div class="space-y-2.5 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">JSON 데이터 URL</label>
+          <input id="cfgJsonUrl" type="text" placeholder="./data/flights.json" class="w-full border border-slate-300 rounded-lg px-3 py-2 font-mono" />
+        </div>
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">GitHub Owner (아이디)</label>
+            <input id="cfgOwner" type="text" placeholder="예: jieum-hyun" class="w-full border border-slate-300 rounded-lg px-3 py-2 font-mono" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Repository 이름</label>
+            <input id="cfgRepo" type="text" placeholder="예: tokyo-flight-tracker" class="w-full border border-slate-300 rounded-lg px-3 py-2 font-mono" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Workflow 파일명</label>
+            <input id="cfgWorkflow" type="text" placeholder="update-flights.yml" class="w-full border border-slate-300 rounded-lg px-3 py-2 font-mono" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">브랜치</label>
+            <input id="cfgBranch" type="text" placeholder="main" class="w-full border border-slate-300 rounded-lg px-3 py-2 font-mono" />
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">GitHub Fine-grained PAT (Actions: Read & Write 권한)</label>
+          <input id="cfgPat" type="password" placeholder="github_pat_..." class="w-full border border-slate-300 rounded-lg px-3 py-2 font-mono" />
+        </div>
+        <div id="cfgTestResult" class="hidden rounded-lg px-3 py-2 text-xs"></div>
+      </div>
+      <div class="flex justify-between items-center pt-2">
+        <button id="btnTestConn" class="px-3 py-2 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700">연결 테스트</button>
+        <div class="flex gap-2">
+          <button id="btnSaveSettings" class="px-4 py-2 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white">저장</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SEED_DATA = {"schema_version": "1.0", "trip": {"title": "도쿄 아리아케 아레나 (2027.03.27~03.29)", "outbound_date": "2027-03-27", "inbound_date": "2027-03-29", "outbound_target_before": "10:00", "outbound_flex_before": "11:00", "inbound_tokyo_depart_target_after": "17:00", "inbound_tokyo_depart_flex_after": "16:00"}, "updated_at_kst": "2026-11-22 14:04:00 KST", "data_source": "seed", "serpapi_quota": {"plan_name": "Free Plan (초기 시드)", "monthly_limit": 250, "this_month_usage": 0, "remaining_credits": 250, "credits_per_refresh": 6, "remaining_free_refreshes": 41, "remaining_midnight_runs_this_month": 8, "extra_manual_refreshes_safe": 33, "plan_renewal_date": null}, "round_trips": [{"id": "rt-7C1101", "airline": "제주항공", "airline_code": "7C", "is_lcc": true, "flight_no": "7C1101", "origin": "ICN", "destination": "NRT", "out_depart": "08:10", "out_arrive": "10:35", "out_duration": "2시간 25분", "out_duration_min": 145, "in_depart": "18:30", "in_arrive": "21:15", "in_duration": "2시간 45분", "in_time_estimated": true, "price": 402257, "url": "https://www.google.com/travel/flights?q=Flights+from+ICN+to+NRT+on+2027-03-27+through+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "rt-7C1187", "airline": "제주항공", "airline_code": "7C", "is_lcc": true, "flight_no": "7C1187", "origin": "ICN", "destination": "NRT", "out_depart": "08:35", "out_arrive": "11:05", "out_duration": "2시간 30분", "out_duration_min": 150, "in_depart": "18:30", "in_arrive": "21:15", "in_duration": "2시간 45분", "in_time_estimated": true, "price": 402257, "url": "https://www.google.com/travel/flights?q=Flights+from+ICN+to+NRT+on+2027-03-27+through+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "rt-7C1183", "airline": "제주항공", "airline_code": "7C", "is_lcc": true, "flight_no": "7C1183", "origin": "ICN", "destination": "NRT", "out_depart": "09:50", "out_arrive": "12:15", "out_duration": "2시간 25분", "out_duration_min": 145, "in_depart": "18:30", "in_arrive": "21:15", "in_duration": "2시간 45분", "in_time_estimated": true, "price": 402257, "url": "https://www.google.com/travel/flights?q=Flights+from+ICN+to+NRT+on+2027-03-27+through+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "rt-7C1103", "airline": "제주항공", "airline_code": "7C", "is_lcc": true, "flight_no": "7C1103", "origin": "ICN", "destination": "NRT", "out_depart": "10:25", "out_arrive": "12:50", "out_duration": "2시간 25분", "out_duration_min": 145, "in_depart": "18:30", "in_arrive": "21:15", "in_duration": "2시간 45분", "in_time_estimated": true, "price": 402257, "url": "https://www.google.com/travel/flights?q=Flights+from+ICN+to+NRT+on+2027-03-27+through+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "rt-BX223", "airline": "에어부산", "airline_code": "BX", "is_lcc": true, "flight_no": "BX223", "origin": "ICN", "destination": "NRT", "out_depart": "07:35", "out_arrive": "10:15", "out_duration": "2시간 40분", "out_duration_min": 160, "in_depart": "16:40", "in_arrive": "19:30", "in_duration": "2시간 50분", "in_time_estimated": true, "price": 429757, "url": "https://www.google.com/travel/flights?q=Flights+from+ICN+to+NRT+on+2027-03-27+through+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "rt-NH862", "airline": "전일본공수 (ANA)", "airline_code": "NH", "is_lcc": false, "flight_no": "NH862", "origin": "GMP", "destination": "HND", "out_depart": "07:45", "out_arrive": "09:45", "out_duration": "2시간 0분", "out_duration_min": 120, "in_depart": "20:05", "in_arrive": "22:20", "in_duration": "2시간 15분", "in_time_estimated": false, "price": 574200, "url": "https://www.google.com/travel/flights?q=Flights+from+GMP+to+HND+on+2027-03-27+through+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "rt-KE2107", "airline": "대한항공", "airline_code": "KE", "is_lcc": false, "flight_no": "KE2107", "origin": "GMP", "destination": "HND", "out_depart": "08:40", "out_arrive": "10:45", "out_duration": "2시간 5분", "out_duration_min": 125, "in_depart": "19:45", "in_arrive": "22:05", "in_duration": "2시간 20분", "in_time_estimated": false, "price": 697800, "url": "https://www.google.com/travel/flights?q=Flights+from+GMP+to+HND+on+2027-03-27+through+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "rt-JL90", "airline": "일본항공 (JAL)", "airline_code": "JL", "is_lcc": false, "flight_no": "JL90", "origin": "GMP", "destination": "HND", "out_depart": "08:15", "out_arrive": "10:20", "out_duration": "2시간 5분", "out_duration_min": 125, "in_depart": "18:55", "in_arrive": "21:15", "in_duration": "2시간 20분", "in_time_estimated": false, "price": 698600, "url": "https://www.google.com/travel/flights?q=Flights+from+GMP+to+HND+on+2027-03-27+through+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "rt-KE2101", "airline": "대한항공", "airline_code": "KE", "is_lcc": false, "flight_no": "KE2101", "origin": "GMP", "destination": "HND", "out_depart": "09:00", "out_arrive": "11:05", "out_duration": "2시간 5분", "out_duration_min": 125, "in_depart": "20:05", "in_arrive": "22:25", "in_duration": "2시간 20분", "in_time_estimated": false, "price": 712800, "url": "https://www.google.com/travel/flights?q=Flights+from+GMP+to+HND+on+2027-03-27+through+2027-03-29+nonstop&curr=KRW&hl=ko"}], "one_way_outbound": [{"id": "ow-out-7C1101", "airline": "제주항공", "airline_code": "7C", "is_lcc": true, "flight_no": "7C1101", "origin": "ICN", "destination": "NRT", "depart": "08:10", "arrive": "10:35", "duration": "2시간 25분", "duration_min": 145, "price": 209900, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+ICN+to+NRT+on+2027-03-27+nonstop&curr=KRW&hl=ko"}, {"id": "ow-out-7C1187", "airline": "제주항공", "airline_code": "7C", "is_lcc": true, "flight_no": "7C1187", "origin": "ICN", "destination": "NRT", "depart": "08:35", "arrive": "11:05", "duration": "2시간 30분", "duration_min": 150, "price": 209900, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+ICN+to+NRT+on+2027-03-27+nonstop&curr=KRW&hl=ko"}, {"id": "ow-out-7C1183", "airline": "제주항공", "airline_code": "7C", "is_lcc": true, "flight_no": "7C1183", "origin": "ICN", "destination": "NRT", "depart": "09:50", "arrive": "12:15", "duration": "2시간 25분", "duration_min": 145, "price": 209900, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+ICN+to+NRT+on+2027-03-27+nonstop&curr=KRW&hl=ko"}, {"id": "ow-out-7C1103", "airline": "제주항공", "airline_code": "7C", "is_lcc": true, "flight_no": "7C1103", "origin": "ICN", "destination": "NRT", "depart": "10:25", "arrive": "12:50", "duration": "2시간 25분", "duration_min": 145, "price": 209900, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+ICN+to+NRT+on+2027-03-27+nonstop&curr=KRW&hl=ko"}, {"id": "ow-out-BX223", "airline": "에어부산", "airline_code": "BX", "is_lcc": true, "flight_no": "BX223", "origin": "ICN", "destination": "NRT", "depart": "07:35", "arrive": "10:15", "duration": "2시간 40분", "duration_min": 160, "price": 237400, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+ICN+to+NRT+on+2027-03-27+nonstop&curr=KRW&hl=ko"}, {"id": "ow-out-JL90", "airline": "일본항공 (JAL)", "airline_code": "JL", "is_lcc": false, "flight_no": "JL90", "origin": "GMP", "destination": "HND", "depart": "08:15", "arrive": "10:20", "duration": "2시간 5분", "duration_min": 125, "price": 383900, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+GMP+to+HND+on+2027-03-27+nonstop&curr=KRW&hl=ko"}, {"id": "ow-out-NH862", "airline": "전일본공수 (ANA)", "airline_code": "NH", "is_lcc": false, "flight_no": "NH862", "origin": "GMP", "destination": "HND", "depart": "07:45", "arrive": "09:45", "duration": "2시간 0분", "duration_min": 120, "price": 416200, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+GMP+to+HND+on+2027-03-27+nonstop&curr=KRW&hl=ko"}, {"id": "ow-out-KE2107", "airline": "대한항공", "airline_code": "KE", "is_lcc": false, "flight_no": "KE2107", "origin": "GMP", "destination": "HND", "depart": "08:40", "arrive": "10:45", "duration": "2시간 5분", "duration_min": 125, "price": 466000, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+GMP+to+HND+on+2027-03-27+nonstop&curr=KRW&hl=ko"}, {"id": "ow-out-RF392", "airline": "에어로케이", "airline_code": "RF", "is_lcc": true, "flight_no": "RF392", "origin": "CJJ", "destination": "NRT", "depart": "07:25", "arrive": "09:35", "duration": "2시간 10분", "duration_min": 130, "price": null, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+CJJ+to+NRT+on+2027-03-27+nonstop&curr=KRW&hl=ko"}, {"id": "ow-out-RF322", "airline": "에어로케이", "airline_code": "RF", "is_lcc": true, "flight_no": "RF322", "origin": "CJJ", "destination": "NRT", "depart": "09:45", "arrive": "11:55", "duration": "2시간 10분", "duration_min": 130, "price": null, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+CJJ+to+NRT+on+2027-03-27+nonstop&curr=KRW&hl=ko"}], "one_way_inbound": [{"id": "ow-in-TW246", "airline": "티웨이항공", "airline_code": "TW", "is_lcc": true, "flight_no": "TW246", "origin": "NRT", "destination": "ICN", "depart": "18:55", "arrive": "21:45", "duration": "2시간 50분", "duration_min": 170, "price": 254326, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+NRT+to+ICN+on+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "ow-in-KE712", "airline": "대한항공", "airline_code": "KE", "is_lcc": false, "flight_no": "KE712", "origin": "NRT", "destination": "ICN", "depart": "17:20", "arrive": "20:00", "duration": "2시간 40분", "duration_min": 160, "price": 354919, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+NRT+to+ICN+on+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "ow-in-KE708", "airline": "대한항공", "airline_code": "KE", "is_lcc": false, "flight_no": "KE708", "origin": "NRT", "destination": "ICN", "depart": "19:00", "arrive": "21:30", "duration": "2시간 30분", "duration_min": 150, "price": 354919, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+NRT+to+ICN+on+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "ow-in-KE716", "airline": "대한항공", "airline_code": "KE", "is_lcc": false, "flight_no": "KE716", "origin": "NRT", "destination": "ICN", "depart": "19:45", "arrive": "22:15", "duration": "2시간 30분", "duration_min": 150, "price": 427074, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+NRT+to+ICN+on+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "ow-in-ZE608", "airline": "이스타항공", "airline_code": "ZE", "is_lcc": true, "flight_no": "ZE608", "origin": "NRT", "destination": "ICN", "depart": "17:30", "arrive": "20:20", "duration": "2시간 50분", "duration_min": 170, "price": null, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+NRT+to+ICN+on+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "ow-in-KE2104", "airline": "대한항공", "airline_code": "KE", "is_lcc": false, "flight_no": "KE2104", "origin": "HND", "destination": "GMP", "depart": "19:45", "arrive": "22:05", "duration": "2시간 20분", "duration_min": 140, "price": 484968, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+HND+to+GMP+on+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "ow-in-KE2110", "airline": "대한항공", "airline_code": "KE", "is_lcc": false, "flight_no": "KE2110", "origin": "HND", "destination": "GMP", "depart": "20:05", "arrive": "22:25", "duration": "2시간 20분", "duration_min": 140, "price": 484968, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+HND+to+GMP+on+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "ow-in-JL95", "airline": "일본항공 (JAL)", "airline_code": "JL", "is_lcc": false, "flight_no": "JL95", "origin": "HND", "destination": "GMP", "depart": "18:55", "arrive": "21:15", "duration": "2시간 20분", "duration_min": 140, "price": 848035, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+HND+to+GMP+on+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "ow-in-NH867", "airline": "전일본공수 (ANA)", "airline_code": "NH", "is_lcc": false, "flight_no": "NH867", "origin": "HND", "destination": "GMP", "depart": "20:05", "arrive": "22:20", "duration": "2시간 15분", "duration_min": 135, "price": 974774, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+HND+to+GMP+on+2027-03-29+nonstop&curr=KRW&hl=ko"}, {"id": "ow-in-NH865", "airline": "전일본공수 (ANA)", "airline_code": "NH", "is_lcc": false, "flight_no": "NH865", "origin": "HND", "destination": "GMP", "depart": "16:10", "arrive": "18:35", "duration": "2시간 25분", "duration_min": 145, "price": 1008729, "url": "https://www.google.com/travel/flights?q=One+way+flights+from+HND+to+GMP+on+2027-03-29+nonstop&curr=KRW&hl=ko"}], "history": [{"date": "2026-11-22", "timestamp_kst": "2026-11-22 14:04:00 KST", "icn_nrt_rt_min": 402257, "gmp_hnd_rt_min": 574200, "one_way_combo_min": 464226}], "errors": []};
+    const STORAGE_CFG = "tokyo_flight_cfg_v1";
+    const STORAGE_OVERRIDES = "tokyo_flight_price_overrides_v1";
+
+    let appData = structuredClone(SEED_DATA);
+    let priceOverrides = JSON.parse(localStorage.getItem(STORAGE_OVERRIDES) || "{}");
+    let activeKr = new Set(["ICN", "GMP", "CJJ"]);
+    let activeJp = new Set(["NRT", "HND"]);
+    let selectedOwOutId = null;
+    let selectedOwInId = null;
+    let priceChartInstance = null;
+    let pollTimer = null;
+
+    const QUICK_ROUTES = [
+      { label: "왕복 ICN ↔ NRT (직항)", desc: "3/27 토 ~ 3/29 월 · 가성비 LCC 중심", url: "https://www.google.com/travel/flights?q=Flights+from+ICN+to+NRT+on+2027-03-27+through+2027-03-29+nonstop&curr=KRW&hl=ko" },
+      { label: "왕복 GMP ↔ HND (직항)", desc: "3/27 토 ~ 3/29 월 · 아리아케 최단 동선", url: "https://www.google.com/travel/flights?q=Flights+from+GMP+to+HND+on+2027-03-27+through+2027-03-29+nonstop&curr=KRW&hl=ko" },
+      { label: "편도 ICN → NRT (3/27 오전)", desc: "토요일 오전 출발 직항", url: "https://www.google.com/travel/flights?q=One+way+flights+from+ICN+to+NRT+on+2027-03-27+nonstop&curr=KRW&hl=ko" },
+      { label: "편도 GMP → HND (3/27 오전)", desc: "토요일 오전 하네다 직항", url: "https://www.google.com/travel/flights?q=One+way+flights+from+GMP+to+HND+on+2027-03-27+nonstop&curr=KRW&hl=ko" },
+      { label: "편도 CJJ → NRT (3/27 오전)", desc: "청주 출발 에어로케이 등 확인", url: "https://www.google.com/travel/flights?q=One+way+flights+from+CJJ+to+NRT+on+2027-03-27+nonstop&curr=KRW&hl=ko" },
+      { label: "편도 NRT → ICN (3/29 오후)", desc: "월요일 도쿄 16~17시 이후 출발", url: "https://www.google.com/travel/flights?q=One+way+flights+from+NRT+to+ICN+on+2027-03-29+nonstop&curr=KRW&hl=ko" },
+      { label: "편도 HND → GMP (3/29 오후)", desc: "월요일 하네다 16~17시 이후 출발", url: "https://www.google.com/travel/flights?q=One+way+flights+from+HND+to+GMP+on+2027-03-29+nonstop&curr=KRW&hl=ko" },
+    ];
+
+    function getCfg() {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_CFG) || "{}");
+      return {
+        jsonUrl: saved.jsonUrl || "./data/flights.json",
+        owner: saved.owner || "",
+        repo: saved.repo || "",
+        workflow: saved.workflow || "update-flights.yml",
+        branch: saved.branch || "main",
+        pat: saved.pat || ""
+      };
+    }
+
+    function toMin(hhmm) {
+      if (!hhmm) return null;
+      const m = String(hhmm).match(/(\d{1,2}):(\d{2})/);
+      if (!m) return null;
+      return parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
+    }
+
+    function fmtKrw(n) {
+      if (n === null || n === undefined || Number.isNaN(n)) return "가격 미표시";
+      return "₩" + Math.round(n).toLocaleString("ko-KR");
+    }
+
+    function getEffectivePrice(item, isRoundTrip) {
+      const base = priceOverrides[item.id] !== undefined ? priceOverrides[item.id] : item.price;
+      if (base === null || base === undefined) return null;
+      const addBag = document.getElementById("toggleBaggage").checked && item.is_lcc;
+      return base + (addBag ? (isRoundTrip ? 90000 : 45000) : 0);
+    }
+
+    // Clock & 00:05 KST auto-reload timer
+    let lastAutoReloadDate = "";
+    function tickClock() {
+      const now = new Date();
+      const kstStr = now.toLocaleString("sv-SE", { timeZone: "Asia/Seoul" }); // YYYY-MM-DD HH:MM:SS
+      const [datePart, timePart] = kstStr.split(" ");
+      document.getElementById("kstClock").textContent = `${datePart} ${timePart}`;
+
+      const [hh, mm, ss] = timePart.split(":").map(Number);
+      const secNow = hh * 3600 + mm * 60 + ss;
+      const targetSec = 5 * 60; // 00:05:00 KST
+      let diff = targetSec - secNow;
+      if (diff <= 0) diff += 86400;
+
+      const ch = String(Math.floor(diff / 3600)).padStart(2, "0");
+      const cm = String(Math.floor((diff % 3600) / 60)).padStart(2, "0");
+      const cs = String(diff % 60).padStart(2, "0");
+      document.getElementById("midnightCountdown").textContent = `${ch}:${cm}:${cs}`;
+
+      if (hh === 0 && mm === 5 && ss === 0 && lastAutoReloadDate !== datePart) {
+        lastAutoReloadDate = datePart;
+        loadFlightJson(true);
+      }
+    }
+
+    async function loadFlightJson(silent = false) {
+      if (location.protocol === "file:") {
+        document.getElementById("fileProtocolBanner").classList.remove("hidden");
+        renderAll();
+        return;
+      }
+      const cfg = getCfg();
+      try {
+        const sep = cfg.jsonUrl.includes("?") ? "&" : "?";
+        const res = await fetch(`${cfg.jsonUrl}${sep}t=${Date.now()}`, { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        appData = json;
+        renderAll();
+      } catch (err) {
+        if (!silent) {
+          console.warn("JSON load fallback to seed:", err);
+        }
+        renderAll();
+      }
+    }
+
+    function renderQuota() {
+      const q = appData.serpapi_quota || {};
+      const limit = q.monthly_limit || 250;
+      const rem = q.remaining_credits ?? 250;
+      const remRef = q.remaining_free_refreshes ?? Math.floor(rem / 6);
+      const midRuns = q.remaining_midnight_runs_this_month ?? 0;
+      const extraSafe = q.extra_manual_refreshes_safe ?? Math.max(0, remRef - midRuns);
+
+      document.getElementById("remainingRefreshes").textContent = `${remRef}회`;
+      document.getElementById("remainingCreditsText").textContent = `(잔여 ${rem} / ${limit} 크레딧 · 1회당 ${q.credits_per_refresh || 6}크레딧)`;
+      document.getElementById("remainingMidnightRuns").textContent = `${midRuns}회`;
+      document.getElementById("extraManualSafe").textContent = `${extraSafe}회`;
+      document.getElementById("lastUpdatedKst").textContent = appData.updated_at_kst || "-";
+      document.getElementById("renewalDateSpan").textContent = q.plan_renewal_date ? `갱신일: ${q.plan_renewal_date}` : "갱신일: 매월 자동 갱신";
+
+      const badge = document.getElementById("dataSourceBadge");
+      if (appData.data_source === "serpapi") {
+        badge.textContent = "SerpApi 실연동";
+        badge.className = "text-[11px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-semibold";
+      } else {
+        badge.textContent = "초기 시드 데이터";
+        badge.className = "text-[11px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold";
+      }
+
+      const pct = Math.max(0, Math.min(100, Math.round((rem / limit) * 100)));
+      const bar = document.getElementById("quotaBar");
+      bar.style.width = `${pct}%`;
+      bar.className = "h-full transition-all duration-500 " + (pct > 40 ? "bg-emerald-500" : pct > 15 ? "bg-amber-500" : "bg-rose-500");
+    }
+
+    function filterRoundTrips() {
+      const maxOutMin = toMin(document.getElementById("filterOutTime").value);
+      const minInMin = toMin(document.getElementById("filterInTime").value);
+
+      return (appData.round_trips || []).filter(item => {
+        if (!activeKr.has(item.origin) || !activeJp.has(item.destination)) return false;
+        const outM = toMin(item.out_depart);
+        if (outM !== null && outM > maxOutMin) return false;
+        const inM = toMin(item.in_depart);
+        if (inM !== null && inM < minInMin) return false;
+        return true;
+      });
+    }
+
+    function filterOwOut() {
+      const maxOutMin = toMin(document.getElementById("filterOutTime").value);
+      return (appData.one_way_outbound || []).filter(item => {
+        if (!activeKr.has(item.origin) || !activeJp.has(item.destination)) return false;
+        const m = toMin(item.depart);
+        return m === null || m <= maxOutMin;
+      });
+    }
+
+    function filterOwIn() {
+      const minInMin = toMin(document.getElementById("filterInTime").value);
+      return (appData.one_way_inbound || []).filter(item => {
+        if (!activeJp.has(item.origin) || !activeKr.has(item.destination)) return false;
+        const m = toMin(item.depart);
+        return m === null || m >= minInMin;
+      });
+    }
+
+    function renderRoundTrips() {
+      const list = filterRoundTrips();
+      const sortBy = document.getElementById("sortRoundTrip").value;
+      list.sort((a, b) => {
+        if (sortBy === "price") {
+          const pa = getEffectivePrice(a, true) ?? 99999999;
+          const pb = getEffectivePrice(b, true) ?? 99999999;
+          return pa - pb;
+        }
+        if (sortBy === "out_depart") return (toMin(a.out_depart) || 0) - (toMin(b.out_depart) || 0);
+        if (sortBy === "in_depart") return (toMin(b.in_depart) || 0) - (toMin(a.in_depart) || 0);
+        if (sortBy === "duration") return (a.out_duration_min || 999) - (b.out_duration_min || 999);
+        return 0;
+      });
+
+      const tbody = document.getElementById("roundTripBody");
+      if (!list.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-400">현재 필터 조건에 맞는 왕복 항공편이 없습니다. 유동 시간 범위를 넓혀 보세요.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(item => {
+        const price = getEffectivePrice(item, true);
+        const outM = toMin(item.out_depart);
+        const inM = toMin(item.in_depart);
+        const outFlexBadge = outM !== null && outM > 600
+          ? `<span class="ml-1 inline-block text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold">+유동</span>` : "";
+        const inFlexBadge = inM !== null && inM < 1020
+          ? `<span class="ml-1 inline-block text-[10px] px-1.5 py-0.5 rounded bg-orange-100 text-orange-800 font-semibold">-유동 · 도쿄 16시대 출발</span>` : "";
+        const estNote = item.in_time_estimated ? `<span class="text-[10px] text-slate-400 ml-1">(참고편)</span>` : "";
+        const lccBadge = item.is_lcc
+          ? `<span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">LCC</span>`
+          : `<span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-700">FSC</span>`;
+
+        return `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-3 px-4">
+              <div class="font-semibold text-slate-900 flex items-center gap-1.5">${item.airline} ${lccBadge}</div>
+              <div class="text-xs text-slate-400 font-mono">${item.flight_no}</div>
+            </td>
+            <td class="py-3 px-4 font-mono font-semibold text-slate-700">${item.origin} ↔ ${item.destination}</td>
+            <td class="py-3 px-4">
+              <div class="font-mono font-semibold text-slate-900">${item.out_depart} → ${item.out_arrive}${outFlexBadge}</div>
+              <div class="text-[11px] text-slate-400">직항 · ${item.out_duration}</div>
+            </td>
+            <td class="py-3 px-4">
+              <div class="font-mono font-semibold text-slate-900">${item.in_depart} → ${item.in_arrive}${estNote}${inFlexBadge}</div>
+              <div class="text-[11px] text-slate-400">도쿄 출발 기준 · ${item.in_duration}</div>
+            </td>
+            <td class="py-3 px-4 text-right">
+              <div class="inline-flex items-center gap-1.5">
+                <span class="font-mono font-bold text-slate-900">${fmtKrw(price)}</span>
+                <button onclick="editPrice('${item.id}', ${item.price ?? 'null'})" title="가격 수동 수정" class="text-slate-400 hover:text-indigo-600 text-xs">✏️</button>
+              </div>
+            </td>
+            <td class="py-3 px-4 text-center">
+              <a href="${item.url}" target="_blank" rel="noopener" class="inline-block text-xs font-medium text-indigo-600 hover:underline">구글 확인 ↗</a>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderOneWay() {
+      const outs = filterOwOut();
+      const ins = filterOwIn();
+
+      if (!outs.some(x => x.id === selectedOwOutId)) selectedOwOutId = outs[0]?.id || null;
+      if (!ins.some(x => x.id === selectedOwInId)) selectedOwInId = ins[0]?.id || null;
+
+      const renderCard = (item, isSelected, dir) => {
+        const price = getEffectivePrice(item, false);
+        const m = toMin(item.depart);
+        const flexBadge = dir === "out" && m !== null && m > 600
+          ? `<span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold">+유동</span>`
+          : (dir === "in" && m !== null && m < 1020
+            ? `<span class="text-[10px] px-1.5 py-0.5 rounded bg-orange-100 text-orange-800 font-semibold">-유동 · 도쿄 16시대 출발</span>` : "");
+
+        return `
+          <div onclick="selectOw('${dir}', '${item.id}')" class="cursor-pointer rounded-xl border p-3 transition flex items-center justify-between gap-2 ${isSelected ? 'border-indigo-600 bg-indigo-50/70 ring-1 ring-indigo-600' : 'border-slate-200 hover:bg-slate-50'}">
+            <div>
+              <div class="flex items-center gap-1.5 text-xs font-bold text-slate-900">
+                <span>${item.airline}</span>
+                <span class="font-mono text-slate-500">${item.flight_no}</span>
+                <span class="font-mono text-indigo-700">${item.origin}→${item.destination}</span>
+                ${flexBadge}
+              </div>
+              <div class="text-xs font-mono text-slate-600 mt-0.5">${item.depart} → ${item.arrive} <span class="text-slate-400">(${item.duration})</span></div>
+            </div>
+            <div class="text-right">
+              <div class="font-mono font-bold text-sm text-slate-900">${fmtKrw(price)}</div>
+              <a href="${item.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="text-[11px] text-indigo-600 hover:underline">구글 ↗</a>
+            </div>
+          </div>
+        `;
+      };
+
+      document.getElementById("owOutboundList").innerHTML = outs.length
+        ? outs.map(x => renderCard(x, x.id === selectedOwOutId, "out")).join("")
+        : `<div class="text-xs text-slate-400 py-4 text-center">조건에 맞는 가는 편이 없습니다.</div>`;
+
+      document.getElementById("owInboundList").innerHTML = ins.length
+        ? ins.map(x => renderCard(x, x.id === selectedOwInId, "in")).join("")
+        : `<div class="text-xs text-slate-400 py-4 text-center">조건에 맞는 오는 편이 없습니다.</div>`;
+
+      const selOut = outs.find(x => x.id === selectedOwOutId);
+      const selIn = ins.find(x => x.id === selectedOwInId);
+      const warnings = [];
+
+      if (selOut && selIn) {
+        const pOut = getEffectivePrice(selOut, false);
+        const pIn = getEffectivePrice(selIn, false);
+        const total = (pOut !== null && pIn !== null) ? pOut + pIn : null;
+
+        document.getElementById("comboSummaryText").textContent =
+          `${selOut.airline} ${selOut.flight_no} (${selOut.origin}→${selOut.destination} ${selOut.depart}) + ${selIn.airline} ${selIn.flight_no} (${selIn.origin}→${selIn.destination} ${selIn.depart})`;
+        document.getElementById("comboTotalPrice").textContent = fmtKrw(total);
+
+        if (selOut.origin !== selIn.destination) {
+          warnings.push(`<span class="text-[11px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-200 border border-amber-400/40">⚠ 한국 공항 교차 (${selOut.origin} 출국 / ${selIn.destination} 귀국 — 자차 주차 주의)</span>`);
+        }
+        if (selOut.destination !== selIn.origin) {
+          warnings.push(`<span class="text-[11px] px-2 py-0.5 rounded bg-sky-500/20 text-sky-200 border border-sky-400/40">ℹ 도쿄 공항 교차 (${selOut.destination} 입국 / ${selIn.origin} 출국)</span>`);
+        }
+
+        const rtPrices = filterRoundTrips().map(x => getEffectivePrice(x, true)).filter(x => x !== null);
+        const bestRt = rtPrices.length ? Math.min(...rtPrices) : null;
+        if (total !== null && bestRt !== null) {
+          const diff = total - bestRt;
+          document.getElementById("comboDiffText").textContent =
+            diff <= 0
+              ? `왕복 최저가보다 ${fmtKrw(Math.abs(diff))} 저렴!`
+              : `왕복 최저가 대비 +${fmtKrw(diff)} 비쌈`;
+        } else {
+          document.getElementById("comboDiffText").textContent = "가격 미표시 편명이 포함되어 있습니다.";
+        }
+      } else {
+        document.getElementById("comboSummaryText").textContent = "가는 편과 오는 편을 모두 선택해 주세요.";
+        document.getElementById("comboTotalPrice").textContent = "-";
+        document.getElementById("comboDiffText").textContent = "";
+      }
+      document.getElementById("comboWarnings").innerHTML = warnings.join("");
+    }
+
+    window.selectOw = function(dir, id) {
+      if (dir === "out") selectedOwOutId = id;
+      else selectedOwInId = id;
+      renderOneWay();
+    };
+
+    window.editPrice = function(id, currentBase) {
+      const cur = priceOverrides[id] ?? currentBase ?? "";
+      const input = prompt("실제 확인한 기본 운임(원, 숫자만 입력 / 비우면 초기화):", cur);
+      if (input === null) return;
+      if (input.trim() === "") {
+        delete priceOverrides[id];
+      } else {
+        const num = parseInt(input.replace(/[^0-9]/g, ""), 10);
+        if (!Number.isNaN(num)) priceOverrides[id] = num;
+      }
+      localStorage.setItem(STORAGE_OVERRIDES, JSON.stringify(priceOverrides));
+      renderAll();
+    };
+
+    function renderKpis() {
+      const rts = filterRoundTrips();
+      const icnP = rts.filter(x => x.origin === "ICN" && x.destination === "NRT").map(x => getEffectivePrice(x, true)).filter(Boolean);
+      const gmpP = rts.filter(x => x.origin === "GMP" && x.destination === "HND").map(x => getEffectivePrice(x, true)).filter(Boolean);
+      const outP = filterOwOut().map(x => getEffectivePrice(x, false)).filter(Boolean);
+      const inP = filterOwIn().map(x => getEffectivePrice(x, false)).filter(Boolean);
+
+      document.getElementById("kpiIcnMin").textContent = icnP.length ? fmtKrw(Math.min(...icnP)) : "-";
+      document.getElementById("kpiGmpMin").textContent = gmpP.length ? fmtKrw(Math.min(...gmpP)) : "-";
+      document.getElementById("kpiComboMin").textContent = (outP.length && inP.length) ? fmtKrw(Math.min(...outP) + Math.min(...inP)) : "-";
+      document.getElementById("kpiBaggageNote").textContent = document.getElementById("toggleBaggage").checked
+        ? "운임 기준: LCC 15kg 위탁수하물 예상비 포함"
+        : "운임 기준: 기본(LCC 수하물 미포함)";
+    }
+
+    function renderChart() {
+      const hist = appData.history || [];
+      const labels = hist.map(h => h.date);
+      const ctx = document.getElementById("priceChart").getContext("2d");
+      if (priceChartInstance) priceChartInstance.destroy();
+      priceChartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            { label: "ICN↔NRT 왕복 최저가", data: hist.map(h => h.icn_nrt_rt_min), borderColor: "#2563eb", backgroundColor: "#2563eb22", tension: 0.25 },
+            { label: "GMP↔HND 왕복 최저가", data: hist.map(h => h.gmp_hnd_rt_min), borderColor: "#059669", backgroundColor: "#05966922", tension: 0.25 },
+            { label: "편도 최저 조합", data: hist.map(h => h.one_way_combo_min), borderColor: "#d97706", backgroundColor: "#d9770622", borderDash: [5, 4], tension: 0.25 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: "bottom" } },
+          scales: {
+            y: { ticks: { callback: v => "₩" + Number(v).toLocaleString("ko-KR") } }
+          }
+        }
+      });
+    }
+
+    function renderLauncher() {
+      document.getElementById("quickLauncherGrid").innerHTML = QUICK_ROUTES.map(r => `
+        <a href="${r.url}" target="_blank" rel="noopener" class="block border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/40 rounded-xl p-3.5 transition">
+          <div class="font-bold text-sm text-slate-900 flex justify-between">
+            <span>${r.label}</span>
+            <span class="text-indigo-600">↗</span>
+          </div>
+          <div class="text-xs text-slate-500 mt-1">${r.desc}</div>
+        </a>
+      `).join("");
+    }
+
+    function renderAll() {
+      renderQuota();
+      renderKpis();
+      renderRoundTrips();
+      renderOneWay();
+      renderChart();
+    }
+
+    // GitHub Actions manual dispatch trigger
+    async function triggerGithubWorkflow() {
+      const cfg = getCfg();
+      const statusEl = document.getElementById("pollingStatus");
+      if (!cfg.owner || !cfg.repo || !cfg.pat) {
+        alert("먼저 우측 상단 [API / GitHub 설정]에서 Owner, Repo, GitHub PAT를 입력해 주세요.");
+        document.getElementById("modalSettings").classList.remove("hidden");
+        return;
+      }
+      const prevUpdated = appData.updated_at_kst;
+      statusEl.classList.remove("hidden");
+      statusEl.textContent = "GitHub Actions 수동 수집을 요청 중입니다...";
+
+      try {
+        const apiUrl = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/actions/workflows/${cfg.workflow}/dispatches`;
+        const res = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${cfg.pat}`,
+            "Accept": "application/vnd.github+json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ ref: cfg.branch || "main" })
+        });
+        if (!res.ok) throw new Error(`GitHub API HTTP ${res.status} (PAT 권한 또는 워크플로우 파일명을 확인하세요)`);
+
+        let tries = 0;
+        statusEl.textContent = "수집 워크플로우 실행 요청 완료! 약 30초 간격으로 최신 flights.json 반영을 자동 확인합니다...";
+        clearInterval(pollTimer);
+        pollTimer = setInterval(async () => {
+          tries += 1;
+          await loadFlightJson(true);
+          if (appData.updated_at_kst !== prevUpdated) {
+            clearInterval(pollTimer);
+            statusEl.textContent = `최신 데이터 반영 완료! (${appData.updated_at_kst})`;
+          } else if (tries >= 8) {
+            clearInterval(pollTimer);
+            statusEl.textContent = "워크플로우 실행이 지연 중입니다. 잠시 후 [JSON 재로드 (0크레딧)] 버튼을 눌러 확인해 주세요.";
+          }
+        }, 30000);
+      } catch (err) {
+        statusEl.textContent = `실행 실패: ${err.message}`;
+      }
+    }
+
+    // Event wiring
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("tab-active", "bg-slate-900", "text-white"));
+        btn.classList.add("tab-active");
+        document.querySelectorAll(".tab-panel").forEach(p => p.classList.add("hidden"));
+        document.getElementById("tab-" + btn.dataset.tab).classList.remove("hidden");
+        if (btn.dataset.tab === "chart") renderChart();
+      });
+    });
+
+    document.querySelectorAll(".airport-kr").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const code = btn.dataset.kr;
+        if (activeKr.has(code) && activeKr.size > 1) activeKr.delete(code);
+        else activeKr.add(code);
+        btn.className = "airport-kr text-xs px-2.5 py-1 rounded-md border font-medium " + (activeKr.has(code) ? "chip-active" : "chip-inactive");
+        renderAll();
+      });
+    });
+
+    document.querySelectorAll(".airport-jp").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const code = btn.dataset.jp;
+        if (activeJp.has(code) && activeJp.size > 1) activeJp.delete(code);
+        else activeJp.add(code);
+        btn.className = "airport-jp text-xs px-2.5 py-1 rounded-md border font-medium " + (activeJp.has(code) ? "chip-active" : "chip-inactive");
+        renderAll();
+      });
+    });
+
+    ["filterOutTime", "filterInTime", "toggleBaggage", "sortRoundTrip"].forEach(id => {
+      document.getElementById(id).addEventListener("change", renderAll);
+    });
+
+    document.getElementById("btnReloadJson").addEventListener("click", () => loadFlightJson(false));
+    document.getElementById("btnExportJson").addEventListener("click", () => {
+      const blob = new Blob([JSON.stringify(appData, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `tokyo-flights-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+    });
+
+    document.getElementById("btnManualFetch").addEventListener("click", () => {
+      document.getElementById("modalRemainCount").textContent = document.getElementById("remainingRefreshes").textContent;
+      document.getElementById("modalConfirmFetch").classList.remove("hidden");
+    });
+    document.getElementById("btnCancelFetch").addEventListener("click", () => document.getElementById("modalConfirmFetch").classList.add("hidden"));
+    document.getElementById("btnConfirmFetch").addEventListener("click", () => {
+      document.getElementById("modalConfirmFetch").classList.add("hidden");
+      triggerGithubWorkflow();
+    });
+
+    // Settings Modal
+    document.getElementById("btnOpenSettings").addEventListener("click", () => {
+      const c = getCfg();
+      document.getElementById("cfgJsonUrl").value = c.jsonUrl;
+      document.getElementById("cfgOwner").value = c.owner;
+      document.getElementById("cfgRepo").value = c.repo;
+      document.getElementById("cfgWorkflow").value = c.workflow;
+      document.getElementById("cfgBranch").value = c.branch;
+      document.getElementById("cfgPat").value = c.pat;
+      document.getElementById("cfgTestResult").classList.add("hidden");
+      document.getElementById("modalSettings").classList.remove("hidden");
+    });
+    document.getElementById("btnCloseSettings").addEventListener("click", () => document.getElementById("modalSettings").classList.add("hidden"));
+    document.getElementById("btnSaveSettings").addEventListener("click", () => {
+      const nextCfg = {
+        jsonUrl: document.getElementById("cfgJsonUrl").value.trim() || "./data/flights.json",
+        owner: document.getElementById("cfgOwner").value.trim(),
+        repo: document.getElementById("cfgRepo").value.trim(),
+        workflow: document.getElementById("cfgWorkflow").value.trim() || "update-flights.yml",
+        branch: document.getElementById("cfgBranch").value.trim() || "main",
+        pat: document.getElementById("cfgPat").value.trim()
+      };
+      localStorage.setItem(STORAGE_CFG, JSON.stringify(nextCfg));
+      document.getElementById("modalSettings").classList.add("hidden");
+      loadFlightJson(false);
+    });
+
+    document.getElementById("btnTestConn").addEventListener("click", async () => {
+      const out = document.getElementById("cfgTestResult");
+      out.classList.remove("hidden");
+      out.className = "rounded-lg px-3 py-2 text-xs bg-slate-100 text-slate-700";
+      out.textContent = "연결 테스트 중...";
+      const owner = document.getElementById("cfgOwner").value.trim();
+      const repo = document.getElementById("cfgRepo").value.trim();
+      const pat = document.getElementById("cfgPat").value.trim();
+      if (!owner || !repo || !pat) {
+        out.className = "rounded-lg px-3 py-2 text-xs bg-amber-50 text-amber-800";
+        out.textContent = "Owner, Repo, PAT를 모두 입력해야 GitHub API 테스트가 가능합니다.";
+        return;
+      }
+      try {
+        const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/actions/workflows`, {
+          headers: { "Authorization": `Bearer ${pat}`, "Accept": "application/vnd.github+json" }
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        out.className = "rounded-lg px-3 py-2 text-xs bg-emerald-50 text-emerald-700";
+        out.textContent = "연결 성공! 저장 후 대시보드에서 수동 수집을 실행할 수 있습니다.";
+      } catch (e) {
+        out.className = "rounded-lg px-3 py-2 text-xs bg-rose-50 text-rose-700";
+        out.textContent = `연결 실패: ${e.message}`;
+      }
+    });
+
+    renderLauncher();
+    tickClock();
+    setInterval(tickClock, 1000);
+    loadFlightJson(true);
+  </script>
+</body>
+</html>
