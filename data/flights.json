@@ -9,17 +9,17 @@
     "inbound_tokyo_depart_target_after": "17:00",
     "inbound_tokyo_depart_flex_after": "16:00"
   },
-  "updated_at_kst": "2026-11-25 00:52:42 KST",
+  "updated_at_kst": "2026-11-26 00:49:02 KST",
   "data_source": "serpapi",
   "serpapi_quota": {
     "plan_name": "Free Plan",
     "monthly_limit": 250,
-    "this_month_usage": 22,
-    "remaining_credits": 228,
+    "this_month_usage": 29,
+    "remaining_credits": 221,
     "credits_per_refresh": 6,
-    "remaining_free_refreshes": 38,
-    "remaining_midnight_runs_this_month": 27,
-    "extra_manual_refreshes_safe": 11,
+    "remaining_free_refreshes": 36,
+    "remaining_midnight_runs_this_month": 26,
+    "extra_manual_refreshes_safe": 10,
     "plan_renewal_date": "2026-12-22"
   },
   "round_trips": [
@@ -39,7 +39,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 510945,
+      "price": 512153,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -58,7 +58,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 526245,
+      "price": 527353,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -77,7 +77,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 533745,
+      "price": 535453,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -96,7 +96,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 533745,
+      "price": 535453,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -115,7 +115,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 533745,
+      "price": 535453,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -134,7 +134,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 533745,
+      "price": 535453,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -153,7 +153,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 533745,
+      "price": 535453,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -172,7 +172,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 533745,
+      "price": 535453,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -191,7 +191,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 544345,
+      "price": 545353,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -210,7 +210,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 551145,
+      "price": 552353,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -229,7 +229,7 @@
       "in_arrive": "21:45",
       "in_duration": "2시간 50분",
       "in_time_estimated": true,
-      "price": 558545,
+      "price": 559753,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -248,7 +248,7 @@
       "in_arrive": "21:45",
       "in_duration": "2시간 50분",
       "in_time_estimated": true,
-      "price": 558545,
+      "price": 559753,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -267,7 +267,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 577545,
+      "price": 578753,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -286,7 +286,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 607545,
+      "price": 608753,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -305,7 +305,7 @@
       "in_arrive": "20:00",
       "in_duration": "2시간 40분",
       "in_time_estimated": true,
-      "price": 618500,
+      "price": 618200,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -324,7 +324,7 @@
       "in_arrive": "20:00",
       "in_duration": "2시간 40분",
       "in_time_estimated": true,
-      "price": 648500,
+      "price": 648200,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -400,7 +400,7 @@
       "in_arrive": "22:20",
       "in_duration": "2시간 15분",
       "in_time_estimated": true,
-      "price": 576200,
+      "price": 576000,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDR01QcgcIARIDSE5EGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNITkRyBwgBEgNHTVBAAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -474,7 +474,7 @@
       "arrive": "10:00",
       "duration": "3시간 0분",
       "duration_min": 180,
-      "price": 201633,
+      "price": 202382,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -489,7 +489,7 @@
       "arrive": "10:10",
       "duration": "2시간 55분",
       "duration_min": 175,
-      "price": 201633,
+      "price": 202382,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -504,7 +504,7 @@
       "arrive": "10:55",
       "duration": "2시간 15분",
       "duration_min": 135,
-      "price": 210897,
+      "price": 211748,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -534,7 +534,7 @@
       "arrive": "09:55",
       "duration": "2시간 25분",
       "duration_min": 145,
-      "price": 252700,
+      "price": 252600,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -549,7 +549,7 @@
       "arrive": "09:40",
       "duration": "2시간 25분",
       "duration_min": 145,
-      "price": 260200,
+      "price": 260700,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -564,7 +564,7 @@
       "arrive": "10:35",
       "duration": "2시간 25분",
       "duration_min": 145,
-      "price": 260200,
+      "price": 260700,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -579,7 +579,7 @@
       "arrive": "10:50",
       "duration": "2시간 25분",
       "duration_min": 145,
-      "price": 260200,
+      "price": 260700,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -594,7 +594,7 @@
       "arrive": "11:05",
       "duration": "2시간 30분",
       "duration_min": 150,
-      "price": 260200,
+      "price": 260700,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -609,7 +609,7 @@
       "arrive": "12:15",
       "duration": "2시간 25분",
       "duration_min": 145,
-      "price": 260200,
+      "price": 260700,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -624,7 +624,7 @@
       "arrive": "12:50",
       "duration": "2시간 25분",
       "duration_min": 145,
-      "price": 260200,
+      "price": 260700,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -639,7 +639,7 @@
       "arrive": "10:45",
       "duration": "2시간 40분",
       "duration_min": 160,
-      "price": 270700,
+      "price": 270600,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -774,7 +774,7 @@
       "arrive": "09:45",
       "duration": "2시간 0분",
       "duration_min": 120,
-      "price": 416900,
+      "price": 416800,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDR01QcgcIARIDSE5EQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -810,81 +810,6 @@
   ],
   "one_way_inbound": [
     {
-      "id": "ow-in-TW246-1855",
-      "airline": "Trinity Airways",
-      "airline_code": "TW",
-      "is_lcc": true,
-      "flight_no": "TW246",
-      "origin": "NRT",
-      "destination": "ICN",
-      "depart": "18:55",
-      "arrive": "21:45",
-      "duration": "2시간 50분",
-      "duration_min": 170,
-      "price": 273546,
-      "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
-    },
-    {
-      "id": "ow-in-KE712-1720",
-      "airline": "대한항공",
-      "airline_code": "KE",
-      "is_lcc": false,
-      "flight_no": "KE712",
-      "origin": "NRT",
-      "destination": "ICN",
-      "depart": "17:20",
-      "arrive": "20:00",
-      "duration": "2시간 40분",
-      "duration_min": 160,
-      "price": 352340,
-      "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
-    },
-    {
-      "id": "ow-in-KE708-1900",
-      "airline": "대한항공",
-      "airline_code": "KE",
-      "is_lcc": false,
-      "flight_no": "KE708",
-      "origin": "NRT",
-      "destination": "ICN",
-      "depart": "19:00",
-      "arrive": "21:30",
-      "duration": "2시간 30분",
-      "duration_min": 150,
-      "price": 352340,
-      "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
-    },
-    {
-      "id": "ow-in-KE716-1945",
-      "airline": "대한항공",
-      "airline_code": "KE",
-      "is_lcc": false,
-      "flight_no": "KE716",
-      "origin": "NRT",
-      "destination": "ICN",
-      "depart": "19:45",
-      "arrive": "22:15",
-      "duration": "2시간 30분",
-      "duration_min": 150,
-      "price": 423971,
-      "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
-    },
-    {
-      "id": "ow-in-KE714-2055",
-      "airline": "대한항공",
-      "airline_code": "KE",
-      "is_lcc": false,
-      "flight_no": "KE714",
-      "origin": "NRT",
-      "destination": "ICN",
-      "depart": "20:55",
-      "arrive": "23:25",
-      "duration": "2시간 30분",
-      "duration_min": 150,
-      "price": 423971,
-      "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
-    },
-    {
       "id": "ow-in-ZE608-1730",
       "airline": "이스타항공",
       "airline_code": "ZE",
@@ -896,7 +821,7 @@
       "arrive": "20:20",
       "duration": "2시간 50분",
       "duration_min": 170,
-      "price": null,
+      "price": 214077,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -911,7 +836,82 @@
       "arrive": "21:15",
       "duration": "2시간 45분",
       "duration_min": 165,
-      "price": null,
+      "price": 214121,
+      "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
+    },
+    {
+      "id": "ow-in-TW246-1855",
+      "airline": "Trinity Airways",
+      "airline_code": "TW",
+      "is_lcc": true,
+      "flight_no": "TW246",
+      "origin": "NRT",
+      "destination": "ICN",
+      "depart": "18:55",
+      "arrive": "21:45",
+      "duration": "2시간 50분",
+      "duration_min": 170,
+      "price": 274753,
+      "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
+    },
+    {
+      "id": "ow-in-KE712-1720",
+      "airline": "대한항공",
+      "airline_code": "KE",
+      "is_lcc": false,
+      "flight_no": "KE712",
+      "origin": "NRT",
+      "destination": "ICN",
+      "depart": "17:20",
+      "arrive": "20:00",
+      "duration": "2시간 40분",
+      "duration_min": 160,
+      "price": 353894,
+      "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
+    },
+    {
+      "id": "ow-in-KE708-1900",
+      "airline": "대한항공",
+      "airline_code": "KE",
+      "is_lcc": false,
+      "flight_no": "KE708",
+      "origin": "NRT",
+      "destination": "ICN",
+      "depart": "19:00",
+      "arrive": "21:30",
+      "duration": "2시간 30분",
+      "duration_min": 150,
+      "price": 353894,
+      "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
+    },
+    {
+      "id": "ow-in-KE716-1945",
+      "airline": "대한항공",
+      "airline_code": "KE",
+      "is_lcc": false,
+      "flight_no": "KE716",
+      "origin": "NRT",
+      "destination": "ICN",
+      "depart": "19:45",
+      "arrive": "22:15",
+      "duration": "2시간 30분",
+      "duration_min": 150,
+      "price": 425841,
+      "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
+    },
+    {
+      "id": "ow-in-KE714-2055",
+      "airline": "대한항공",
+      "airline_code": "KE",
+      "is_lcc": false,
+      "flight_no": "KE714",
+      "origin": "NRT",
+      "destination": "ICN",
+      "depart": "20:55",
+      "arrive": "23:25",
+      "duration": "2시간 30분",
+      "duration_min": 150,
+      "price": 425841,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -926,7 +926,7 @@
       "arrive": "22:05",
       "duration": "2시간 20분",
       "duration_min": 140,
-      "price": 481444,
+      "price": 483568,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDSE5EcgcIARIDR01QQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -941,7 +941,7 @@
       "arrive": "22:25",
       "duration": "2시간 20분",
       "duration_min": 140,
-      "price": 481444,
+      "price": 483568,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDSE5EcgcIARIDR01QQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -956,7 +956,7 @@
       "arrive": "21:15",
       "duration": "2시간 20분",
       "duration_min": 140,
-      "price": 841873,
+      "price": 845589,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDSE5EcgcIARIDR01QQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -971,7 +971,7 @@
       "arrive": "22:20",
       "duration": "2시간 15분",
       "duration_min": 135,
-      "price": 967691,
+      "price": 971961,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDSE5EcgcIARIDR01QQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -986,7 +986,7 @@
       "arrive": "18:35",
       "duration": "2시간 25분",
       "duration_min": 145,
-      "price": 1001399,
+      "price": 1005819,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDSE5EcgcIARIDR01QQAFIAXABmAEC&tfu=EgIIAQ"
     }
   ],
@@ -1018,6 +1018,13 @@
       "icn_nrt_rt_min": 510945,
       "gmp_hnd_rt_min": 576200,
       "one_way_combo_min": 475179
+    },
+    {
+      "date": "2026-11-26",
+      "timestamp_kst": "2026-11-26 00:49:02 KST",
+      "icn_nrt_rt_min": 512153,
+      "gmp_hnd_rt_min": 576000,
+      "one_way_combo_min": 416459
     }
   ],
   "errors": []
