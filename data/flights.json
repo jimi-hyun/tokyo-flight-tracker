@@ -9,16 +9,16 @@
     "inbound_tokyo_depart_target_after": "17:00",
     "inbound_tokyo_depart_flex_after": "16:00"
   },
-  "updated_at_kst": "2026-11-28 00:46:51 KST",
+  "updated_at_kst": "2026-11-29 00:32:26 KST",
   "data_source": "serpapi",
   "serpapi_quota": {
     "plan_name": "Free Plan",
     "monthly_limit": 250,
-    "this_month_usage": 42,
-    "remaining_credits": 208,
+    "this_month_usage": 47,
+    "remaining_credits": 203,
     "credits_per_refresh": 6,
-    "remaining_free_refreshes": 34,
-    "remaining_midnight_runs_this_month": 24,
+    "remaining_free_refreshes": 33,
+    "remaining_midnight_runs_this_month": 23,
     "extra_manual_refreshes_safe": 10,
     "plan_renewal_date": "2026-12-22"
   },
@@ -39,7 +39,7 @@
       "in_arrive": "20:20",
       "in_duration": "2시간 50분",
       "in_time_estimated": true,
-      "price": 451100,
+      "price": 443400,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -58,7 +58,7 @@
       "in_arrive": "20:20",
       "in_duration": "2시간 50분",
       "in_time_estimated": true,
-      "price": 451100,
+      "price": 443400,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -77,7 +77,7 @@
       "in_arrive": "20:20",
       "in_duration": "2시간 50분",
       "in_time_estimated": true,
-      "price": 461000,
+      "price": 452900,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -96,7 +96,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 509306,
+      "price": 508682,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -115,7 +115,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 524506,
+      "price": 523882,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -134,7 +134,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 532406,
+      "price": 531782,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -153,7 +153,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 532406,
+      "price": 531782,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -172,7 +172,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 532406,
+      "price": 531782,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -191,7 +191,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 532406,
+      "price": 531782,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -210,7 +210,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 532406,
+      "price": 531782,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -229,7 +229,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 532406,
+      "price": 531782,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -248,7 +248,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 542506,
+      "price": 541882,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -267,7 +267,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 549506,
+      "price": 548882,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -286,7 +286,7 @@
       "in_arrive": "21:45",
       "in_duration": "2시간 50분",
       "in_time_estimated": true,
-      "price": 556906,
+      "price": 556282,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -305,7 +305,7 @@
       "in_arrive": "21:45",
       "in_duration": "2시간 50분",
       "in_time_estimated": true,
-      "price": 556906,
+      "price": 556282,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -324,7 +324,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 575906,
+      "price": 575282,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -343,7 +343,7 @@
       "in_arrive": "-",
       "in_duration": "약 2시간 30분",
       "in_time_estimated": true,
-      "price": 605906,
+      "price": 605282,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUGiQSCjIwMjctMDMtMjkoAEAQSBdqBwgBEgNOUlRyBwgBEgNJQ05AAUgBcAGYAQE&tfu=EgIIAQ"
     },
     {
@@ -474,7 +474,7 @@
       "arrive": "10:00",
       "duration": "3시간 0분",
       "duration_min": 180,
-      "price": 198545,
+      "price": 201013,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -489,7 +489,7 @@
       "arrive": "10:10",
       "duration": "2시간 55분",
       "duration_min": 175,
-      "price": 198545,
+      "price": 201013,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -504,7 +504,7 @@
       "arrive": "10:55",
       "duration": "2시간 15분",
       "duration_min": 135,
-      "price": 207729,
+      "price": 210328,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI3KABAAEgLagcIARIDSUNOcgcIARIDTlJUQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -821,7 +821,7 @@
       "arrive": "20:20",
       "duration": "2시간 50분",
       "duration_min": 170,
-      "price": 218009,
+      "price": 221642,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -836,7 +836,7 @@
       "arrive": "21:15",
       "duration": "2시간 45분",
       "duration_min": 165,
-      "price": 218009,
+      "price": 221642,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -851,7 +851,7 @@
       "arrive": "21:45",
       "duration": "2시간 50분",
       "duration_min": 170,
-      "price": 271906,
+      "price": 271282,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -866,7 +866,7 @@
       "arrive": "21:30",
       "duration": "2시간 30분",
       "duration_min": 150,
-      "price": 310020,
+      "price": 309308,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -881,7 +881,7 @@
       "arrive": "20:00",
       "duration": "2시간 40분",
       "duration_min": 160,
-      "price": 334312,
+      "price": 372824,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -896,7 +896,7 @@
       "arrive": "22:15",
       "duration": "2시간 30분",
       "duration_min": 150,
-      "price": 373682,
+      "price": 372824,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -911,7 +911,7 @@
       "arrive": "23:25",
       "duration": "2시간 30분",
       "duration_min": 150,
-      "price": 373682,
+      "price": 372824,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDTlJUcgcIARIDSUNOQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -926,7 +926,7 @@
       "arrive": "22:05",
       "duration": "2시간 20분",
       "duration_min": 140,
-      "price": 478558,
+      "price": 477459,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDSE5EcgcIARIDR01QQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -941,7 +941,7 @@
       "arrive": "22:25",
       "duration": "2시간 20분",
       "duration_min": 140,
-      "price": 478558,
+      "price": 477459,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDSE5EcgcIARIDR01QQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -956,7 +956,7 @@
       "arrive": "21:15",
       "duration": "2시간 20분",
       "duration_min": 140,
-      "price": 836828,
+      "price": 834906,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDSE5EcgcIARIDR01QQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -971,7 +971,7 @@
       "arrive": "22:20",
       "duration": "2시간 15분",
       "duration_min": 135,
-      "price": 961891,
+      "price": 959682,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDSE5EcgcIARIDR01QQAFIAXABmAEC&tfu=EgIIAQ"
     },
     {
@@ -986,7 +986,7 @@
       "arrive": "18:35",
       "duration": "2시간 25분",
       "duration_min": 145,
-      "price": 995398,
+      "price": 993111,
       "url": "https://www.google.com/travel/flights?hl=ko&gl=kr&curr=KRW&tfs=CBwQAhokEgoyMDI3LTAzLTI5KABAEEgXagcIARIDSE5EcgcIARIDR01QQAFIAXABmAEC&tfu=EgIIAQ"
     }
   ],
@@ -1039,6 +1039,13 @@
       "icn_nrt_rt_min": 451100,
       "gmp_hnd_rt_min": 576200,
       "one_way_combo_min": 416554
+    },
+    {
+      "date": "2026-11-29",
+      "timestamp_kst": "2026-11-29 00:32:26 KST",
+      "icn_nrt_rt_min": 443400,
+      "gmp_hnd_rt_min": 576200,
+      "one_way_combo_min": 422655
     }
   ],
   "errors": []
